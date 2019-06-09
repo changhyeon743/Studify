@@ -4,6 +4,9 @@ let { User } = require('../DB/User');
 var random_string = require('randomstring');
 
 function index(app) {
+  app.get('/', (req, res) => {
+    res.status(200).send("Studify");
+  })
   app.get('/users', (req, res) => {
     User.find({}, (err, model) => {
       if (err) throw err;
@@ -35,7 +38,7 @@ function index(app) {
     })
   })
 
-  app.post('/user/ranking', function(req,res) {
+  app.get('/user/ranking', function(req,res) {
     User.find().sort({average_time:1}).then(function (err, model) {
       if (err) throw err;
       res.send({result: model})
