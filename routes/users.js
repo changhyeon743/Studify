@@ -34,6 +34,13 @@ function index(app) {
       }
     })
   })
+
+  app.post('/user/ranking', function(req,res) {
+    User.find().sort({average_time:1}).then(function (err, model) {
+      if (err) throw err;
+      res.send({result: model})
+    });
+  })
 }
 
 
