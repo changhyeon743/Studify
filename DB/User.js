@@ -11,12 +11,14 @@ db.once('open', function callback() {
 let User = new mongoose.Schema({
     name: String,
     facebookId: String,
-    start_time: String,
-    end_time: String,
-    average_time: String,
-    max_time: String,
+    profileURL: String,
+    current: String,
+    start_time: Number,
+    end_time: Number,
+    average_time: Number,
+    max_time: Number,
     token: String
 });
 
-let userModel = mongoose.model('userModel', User);
+let userModel = mongoose.model('users', User);
 exports.User = userModel;

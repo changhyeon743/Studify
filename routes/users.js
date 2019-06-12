@@ -1,5 +1,7 @@
 module.exports = index;
 
+var async = require('async');
+
 let { User } = require('../DB/User');
 var random_string = require('randomstring');
 
@@ -8,9 +10,21 @@ function index(app) {
     res.status(200).send("Studify");
   })
   app.get('/users', (req, res) => {
-    User.find({}, (err, model) => {
+    User.find((err, model) => {
       if (err) throw err;
       res.status(200).send({ model: model }) ;
+    })
+  })
+
+  app.post('/user/fetch', (req,res)=> {
+    let token = req.body.token;
+    User.findOne({token: token},(err,model)=> {
+      if (err) throw err;
+      if (model == null) {
+        res.status(404).send("Wrong Token")
+      } else {
+        res.status(200).send(model)
+      }
     })
   })
 
@@ -18,10 +32,12 @@ function index(app) {
     let user = new User({
       name: req.body.name,
       facebookId: req.body.facebookId,
-      start_time: "",
-      end_time: "",
-      average_time: "",
-      max_time: "",
+      profileURL: req.body.profileURL,
+      current: "",
+      start_time: -1,
+      end_time: -1,
+      average_time: 0,
+      max_time: 0,
       token: random_string.generate()
     })
     User.find({facebookId: req.body.facebookId} , (err,model)=> {
@@ -39,10 +55,113 @@ function index(app) {
   })
 
   app.get('/user/ranking', function(req,res) {
-    User.find().sort({average_time:1}).then(function (err, model) {
+    User.find().sort({max_time: -1}).exec((err,model)=> {
       if (err) throw err;
-      res.send({result: model})
-    });
+      res.status(200).send(model)
+    })
+  })
+  app.post('/user/friend/ranking', function(req,res) {
+    let ids = String(req.body.ids).split(',')
+
+    User.find({facebookId: {$in: ids}}).sort({max_time: -1}).exec((err,model)=> {
+      if (err) throw err;
+      res.status(200).send(model)
+    })
+    
+  })
+
+  app.post('/user/start', function(req,res) {
+    let token = req.body.token;
+    let current = req.body.current;
+    User.findOne({token: token},(err,model)=> { 
+      if (err) throw err;
+
+
+      if (model == null) {
+        res.status(404).send("Wrong Token")
+      } else {
+        //시간 흘러가기 시작
+        //종료 시간은 0으로
+        //이미 시작했던 경우에
+        let time = new Date().getTime()
+        let along = (model.end_time != -1) ? (time - model.end_time) / 1000 : 0;
+        User.updateOne({token:token},{$set: {start_time: time, end_time: -1,current: current}},(err,model)=> {
+          if (err) throw err;
+          res.status(200).send({amount: along ,message: "초만에 시작하는 공부"});
+        })
+      }
+    })
+  })
+
+  app.post('/user/end', function(req,res) {
+    let token = req.body.token;
+    console.log(token)
+    User.findOne({token: token},(err,model)=> {
+      if (err) throw err;
+      if (model == null) {
+        res.status(404).send("Wrong Token")
+      } else {
+        console.log(model)
+        if (model.start_time != -1) { //시작이 돼있었을경우에
+          
+          let started = model.start_time;
+          let ended = new Date().getTime()
+          let amount = (ended - started) / 1000 //result : second
+          let max_time = model.max_time
+          if (max_time < amount) {
+            max_time = amount;
+          }
+
+          User.updateOne({token:token},{$set: {start_time: -1, end_time: ended, max_time: max_time, current: ""}},(err,model)=> {
+            if (err) throw err;
+            res.status(200).send({amount: amount})
+          })
+        } else {
+          res.status(404).send('Already ended')
+        }
+        
+      }
+    })
+  })
+
+  app.post('/user/updateAverageTime', function(req,res) {
+    let token = req.body.token;
+    let newValue = req.body.average_time;
+
+    User.find({token: token},(err,model)=> {
+      if (err) throw err;
+      if (model.length == 0) {
+        res.status(404).send("Wrong Token")
+      } else {
+        User.updateOne({token: token},{$set: {average_time: newValue}},(err,model)=> {
+          if (err) throw err;
+          res.status(200).send({
+            message: "success",
+            result: model
+          })
+        })
+      }
+    })
+  })
+
+  app.post('/user/updateMaxTime', function(req,res) {
+    let token = req.body.token;
+    let newValue = req.body.max_time;
+
+    User.find({token: token},(err,model)=> {
+      if (err) throw err;
+      if (model.length == 0) {
+        res.status(404).send("Wrong Token")
+      } else {
+        User.update({token: token},{$set: {max_time: newValue}},(err,model)=> {
+          if (err) throw err;
+          res.status(200).send({
+            message: "success",
+            result: model
+          })
+        })
+      }
+    })
   })
 }
 
