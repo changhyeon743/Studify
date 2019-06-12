@@ -9,8 +9,8 @@
 > Require
 	
 	name: String
-  facebookId: String
-  profileURL: String
+  	facebookId: String
+  	profileURL: String
 	
 > Response: Success
 
@@ -52,6 +52,7 @@
 
   	amount: Number
 	현재 시간 - 마지막으로 공부를 마친 시간
+	
   	message: "초만에 시작하는 공부"
 
 > Response: Fail
