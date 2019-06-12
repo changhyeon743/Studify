@@ -54,12 +54,13 @@ function index(app) {
     })
   })
 
-  app.get('/user/ranking', function(req,res) {
+  app.post('/user/ranking', function(req,res) {
     User.find().sort({max_time: -1}).exec((err,model)=> {
       if (err) throw err;
       res.status(200).send(model)
     })
   })
+  
   app.post('/user/friend/ranking', function(req,res) {
     let ids = String(req.body.ids).split(',')
 
