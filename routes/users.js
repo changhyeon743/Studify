@@ -7,8 +7,13 @@ var random_string = require('randomstring');
 
 function index(app) {
   app.get('/', (req, res) => {
-    res.status(200).send("Studify");
+    User.find((err,model)=> {
+      if (err) throw err;
+      res.render('index',{data: model});
+    })
+    
   })
+
   app.get('/users', (req, res) => {
     User.find((err, model) => {
       if (err) throw err;
