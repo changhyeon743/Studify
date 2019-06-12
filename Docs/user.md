@@ -14,7 +14,7 @@
 	
 > Response: Success
 
-	userModel: *DB에 저장된 모델*
+	userModel: 하단 예시 참고
 
 > Response: Fail
 
@@ -26,7 +26,7 @@
 	
 > Response: Success
   
-  *정렬된 모델( 하단의 예시 참고 )*
+  	정렬된 모델( 하단의 예시 참고 )
 
 ## POST: /user/friend/ranking
 > Require
@@ -45,11 +45,13 @@
 > Require
 	
 	token: String
-  	current: String *(현재 공부하고 있는 것)*
+  	current: String
+	현재 공부하고 있는 것
 		
 > Response: Success
 
-  	amount: Number *( 현재 시간 - 마지막으로 공부를 마친 시간 )*
+  	amount: Number
+	현재 시간 - 마지막으로 공부를 마친 시간
   	message: "초만에 시작하는 공부"
 
 > Response: Fail
@@ -65,7 +67,8 @@
 	
 > Response: Success
 
-  	amount: Number *( 공부량 )*
+  	amount: Number
+	공부량
 
 > Response: Fail
 
@@ -82,7 +85,7 @@
 > Response: Success
 
   	message: "success"
-  	result: (몽고디비에서 제공하는 모델. 무시해도 됨.)  
+  	result: (ignorable)
 
 > Response: Fail
 
@@ -97,7 +100,7 @@
 > Response: Success
 
   	message: "success"
-  	result: (몽고디비에서 제공하는 모델. 무시해도 됨.)  
+  	result: (ignorable)  
 
 > Response: Fail
 	
