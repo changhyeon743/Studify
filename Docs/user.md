@@ -32,8 +32,10 @@
 > Require
 	
 	ids: String
-  **1003922,29239328,23329**
-  **쉼표로 아이디를 구분합니다.**
+	
+	
+  	1003922,29239328,23329
+  	쉼표로 아이디를 구분합니다.
 	
 > Response: Success
   
@@ -43,51 +45,62 @@
 > Require
 	
 	token: String
-  current: String *(현재 공부하고 있는 것)*
-	
+  	current: String *(현재 공부하고 있는 것)*
+		
 > Response: Success
-  amount: Number *( 현재 시간 - 마지막으로 공부를 마친 시간 )*
-  message: "초만에 시작하는 공부"
+
+  	amount: Number *( 현재 시간 - 마지막으로 공부를 마친 시간 )*
+  	message: "초만에 시작하는 공부"
 
 > Response: Fail
+
 	message: "Wrong Token"
   
 > 공부를 시작하면 end_time이 -1로 설정됨.
 
 ## POST: /user/end
 > Require
+
 	token: String
 	
 > Response: Success
-  amount: Number *( 공부량 )*
+
+  	amount: Number *( 공부량 )*
 
 > Response: Fail
+
 	message: "Wrong Token"
   
 > 공부를 마치면 start_time이 -1로 설정됨.
 
 ## POST: /user/updateAverageTime
 > Require
+
 	token: String
-  average_time: Number
+  	average_time: Number
 	
 > Response: Success
-  message: "success"
-  result: (몽고디비에서 제공하는 모델. 무시해도 됨.)  
+
+  	message: "success"
+  	result: (몽고디비에서 제공하는 모델. 무시해도 됨.)  
 
 > Response: Fail
+
 	message: "Wrong Token"
   
 ## POST: /user/updateMaxTime
 > Require
+
 	token: String
-  max_time: Number
+  	max_time: Number
 	
 > Response: Success
-  message: "success"
-  result: (몽고디비에서 제공하는 모델. 무시해도 됨.)  
+
+  	message: "success"
+  	result: (몽고디비에서 제공하는 모델. 무시해도 됨.)  
 
 > Response: Fail
+	
 	message: "Wrong Token"
   
 
