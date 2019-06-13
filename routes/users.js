@@ -59,7 +59,10 @@ function index(app) {
           res.status(200).send({userModel: model})
         })
       } else {
-        res.status(404).send({message: "Facebook Id is already existed"})
+        res.status(404).send({
+          message: "Facebook Id is already existed",
+          userModel: model
+        })
       }
     })
   })
@@ -78,7 +81,15 @@ function index(app) {
       if (err) throw err;
       res.status(200).send(model)
     })
-    
+  })
+
+  app.post('/user/friend/current', function(req,res) {
+    let ids = String(req.body.ids).split(',')
+
+    User.find({facebookId: {$in: ids}}).sort({max_time: -1}).exec((err,model)=> {
+      if (err) throw err;
+      res.status(200).send(model.map((e)=>{return e.current}))
+    })
   })
 
   app.post('/user/start', function(req,res) {
