@@ -58,7 +58,7 @@ function index(app) {
     User.findOne({facebookId: req.body.facebookId} , (err,model)=> {
       if (err) throw err;
 
-      if (model.length == 0) { //새로운 유저일 경우
+      if (model == null) { //새로운 유저일 경우
         user.save((err,model)=>{
           if (err) throw err;
           res.status(200).send({userModel: model})
