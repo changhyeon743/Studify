@@ -9,6 +9,11 @@ function index(app) {
   app.get('/', (req, res) => {
     res.send("Studify running..")
   })
+  
+  app.get('/drop',(req,res)=> {
+    User.drop();
+    res.send('dropped')
+  })
 
   app.get('/ranking',(req,res)=> {
     User.find()
@@ -50,7 +55,7 @@ function index(app) {
       max_time: 0,
       token: random_string.generate()
     })
-    User.find({facebookId: req.body.facebookId} , (err,model)=> {
+    User.findOne({facebookId: req.body.facebookId} , (err,model)=> {
       if (err) throw err;
 
       if (model.length == 0) { //새로운 유저일 경우
