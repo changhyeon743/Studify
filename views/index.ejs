@@ -45,7 +45,7 @@
             transition: font-size 0.3s ease, background-color 0.3s ease;
         }
 
-        li > image {
+        li > img {
             width: 50px;
             height: 50px;
             object-fit: cover;
@@ -63,7 +63,7 @@
     <ul>
         <% data.forEach((i)=>{ %>
         <li>
-            <img src=<%= i.profileurl %> />
+            <img src=<%= i.profileURL %> />
             <%= i.name %>
             의 최대 공부 시간 :
             <%= i.max_time %>
