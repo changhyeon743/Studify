@@ -65,8 +65,7 @@ function index(app) {
           res.status(200).send({userModel: model})
         })
       } else {
-        res.status(404).send({
-          message: "Facebook Id is already existed",
+        res.status(200).send({
           userModel: model
         })
       }
