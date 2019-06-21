@@ -64,10 +64,13 @@
         <% data.forEach((i)=>{ %>
         <li>
             <img src=<%= i.profileURL %> />
-            <%= i.name %>
-            의 최대 공부 시간 :
-            <%= i.max_time %>
-            초
+            <span>
+                <%= i.name %>
+                의 최대 공부 시간 :
+                <%= i.max_time %>
+                초
+            </span>
+            
         </li>
         <% }) %>
     </ul>
