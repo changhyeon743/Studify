@@ -53,8 +53,7 @@ function index(app) {
       end_time: -1,
       average_time: 0,
       max_time: 0,
-      token: random_string.generate(),
-      times: 0
+      token: random_string.generate()
     })
     User.findOne({facebookId: req.body.facebookId} , (err,model)=> {
       if (err) throw err;
@@ -141,11 +140,11 @@ function index(app) {
           }
 
           //Calculating average
-          var times = model.times == null ? 0 : model.times;
-          let average_time = (model.average_time * times + amount)/(times+1);
-          times = times+1;
+          //var times = model.times == null ? 0 : model.times;
+          //let average_time = (model.average_time * times + amount)/(times+1);
+          //times = times+1;
 
-          User.updateOne({token:token},{$set: {average_time: average_time,start_time: -1, end_time: ended, max_time: max_time, current: "",times: times}},(err,model)=> {
+          User.updateOne({token:token},{$set: {start_time: -1, end_time: ended, max_time: max_time, current: ""}},(err,model)=> {
             if (err) throw err;
             res.status(200).send({amount: amount})
           })
