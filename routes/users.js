@@ -53,7 +53,8 @@ function index(app) {
       end_time: -1,
       average_time: 0,
       max_time: 0,
-      token: random_string.generate()
+      token: random_string.generate(),
+      times: 0
     })
     User.findOne({facebookId: req.body.facebookId} , (err,model)=> {
       if (err) throw err;
@@ -112,7 +113,7 @@ function index(app) {
         //이미 시작했던 경우에
         let time = new Date().getTime()
         let along = (model.end_time != -1) ? (time - model.end_time) / 1000 : 0;
-        User.updateOne({token:token},{$set: {start_time: time, end_time: -1,current: current}},(err,model)=> {
+        User.updateOne({token:token},{$set: {start_time: time, end_time: -1,current: current,times: times}},(err,model)=> {
           if (err) throw err;
           res.status(200).send({amount: along ,message: "초만에 시작하는 공부"});
         })
@@ -130,16 +131,22 @@ function index(app) {
       } else {
         console.log(model)
         if (model.start_time != -1) { //시작이 돼있었을경우에
-          
           let started = model.start_time;
           let ended = new Date().getTime()
           let amount = (ended - started) / 1000 //result : second
           let max_time = model.max_time
+
+          //Max time update
           if (max_time < amount) {
             max_time = amount;
           }
 
-          User.updateOne({token:token},{$set: {start_time: -1, end_time: ended, max_time: max_time, current: ""}},(err,model)=> {
+          //Calculating average
+          var times = model.times;
+          let average_time = (model.average_time * times + amount)/(times+1);
+          times = times+1;
+
+          User.updateOne({token:token},{$set: {average_time: average_time,start_time: -1, end_time: ended, max_time: max_time, current: "",times: times}},(err,model)=> {
             if (err) throw err;
             res.status(200).send({amount: amount})
           })
