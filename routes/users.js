@@ -142,7 +142,7 @@ function index(app) {
           }
 
           //Calculating average
-          var times = model.times;
+          var times = model.times == null ? 0 : model.times;
           let average_time = (model.average_time * times + amount)/(times+1);
           times = times+1;
 
