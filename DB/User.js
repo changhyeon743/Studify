@@ -18,7 +18,7 @@ let User = new mongoose.Schema({
     average_time: Number,
     max_time: Number,
     token: String,
-    times: Number,
+    times: Number = 0,
 });
 
 let userModel = mongoose.model('users', User);
