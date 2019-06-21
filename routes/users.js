@@ -113,7 +113,7 @@ function index(app) {
         //이미 시작했던 경우에
         let time = new Date().getTime()
         let along = (model.end_time != -1) ? (time - model.end_time) / 1000 : 0;
-        User.updateOne({token:token},{$set: {start_time: time, end_time: -1,current: current,times: times}},(err,model)=> {
+        User.updateOne({token:token},{$set: {start_time: time, end_time: -1,current: current}},(err,model)=> {
           if (err) throw err;
           res.status(200).send({amount: along ,message: "초만에 시작하는 공부"});
         })
