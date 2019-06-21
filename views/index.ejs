@@ -36,7 +36,7 @@
         li {
             text-decoration: none;
             color: #000;
-            display: block;
+            display: flex;
 
             -webkit-transition: font-size 0.3s ease, background-color 0.3s ease;
             -moz-transition: font-size 0.3s ease, background-color 0.3s ease;
@@ -48,7 +48,12 @@
         li > img {
             width: 50px;
             height: 50px;
+            border-radius: 50%;
             object-fit: cover;
+        }
+
+        li > span {
+            margin: auto 0 auto 8px;
         }
 
         li:hover {
