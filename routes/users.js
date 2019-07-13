@@ -136,7 +136,7 @@ function index(app) {
           if (model == null) {
             //오늘의 공부가 존재하지 않을 경우
             let study = new Study({
-              date: String,
+              date: flatTime,
               amount: 0,
               userToken: token,
               token: random_string.generate()
@@ -195,7 +195,7 @@ function index(app) {
             if (model == null) {
               //오늘의 공부가 존재하지 않을 경우
               let study = new Study({
-                date: String,
+                date: flatTime,
                 amount: amount,
                 userToken: token,
                 token: random_string.generate()
