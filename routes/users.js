@@ -117,26 +117,14 @@ function index(app) {
           res.status(200).send({amount: along ,message: "초만에 시작하는 공부"});
         })
 
-        var date = new Date(); 
-        var year = date.getFullYear(); 
-        var month = new String(date.getMonth()+1); 
-        var day = new String(date.getDate()); 
-        
-        // 한자리수일 경우 0을 채워준다. 
-        if(month.length == 1){ 
-          month = "0" + month; 
-        } 
-        if(day.length == 1){ 
-          day = "0" + day; 
-        } 
-        let flatTime = year + "" + month + "" + day;
+        let flatDate = getFlatDate()
 
-        Study.findOne({date: flatTime},(err,model)=> {
+        Study.findOne({date: flatDate},(err,model)=> {
           if (err) throw err;
           if (model == null) {
             //오늘의 공부가 존재하지 않을 경우
             let study = new Study({
-              date: flatTime,
+              date: flatDate,
               amount: 0,
               userToken: token,
               token: random_string.generate()
@@ -182,20 +170,15 @@ function index(app) {
 
           //MARK: - Study Records
           // 한자리수일 경우 0을 채워준다. 
-          if(month.length == 1){ 
-            month = "0" + month; 
-          } 
-          if(day.length == 1){ 
-            day = "0" + day; 
-          } 
-          let flatTime = year + "" + month + "" + day;
 
-          Study.findOne({date: flatTime},(err,model)=> {
+          let flatDate = getFlatDate()
+          
+          Study.findOne({date: flatDate},(err,model)=> {
             if (err) throw err;
             if (model == null) {
               //오늘의 공부가 존재하지 않을 경우
               let study = new Study({
-                date: flatTime,
+                date: flatDate,
                 amount: amount,
                 userToken: token,
                 token: random_string.generate()
@@ -261,5 +244,18 @@ function index(app) {
 }
 
 
-
-
+function getFlatDate() {
+  var date = new Date(); 
+  var year = date.getFullYear(); 
+  var month = new String(date.getMonth()+1); 
+  var day = new String(date.getDate()); 
+  
+  if(month.length == 1){ 
+    month = "0" + month; 
+  } 
+  if(day.length == 1){ 
+    day = "0" + day; 
+  } 
+  let flatTime = year + "" + month + "" + day;
+  return flatTime;
+}
