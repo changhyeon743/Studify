@@ -43,7 +43,7 @@ function index(app) {
     })
   })
 
-  app.post('user/record', (req,res)=> {
+  app.post('/user/record', (req,res)=> {
     let token = req.body.token;
     Study.find({userToken: token},(err,model)=> {
       if (err) throw err;
