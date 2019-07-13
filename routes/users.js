@@ -55,6 +55,22 @@ function index(app) {
     })
   })
 
+  app.post('/user/record/add', (req,res)=> {
+    let token = req.body.token;
+    let date = req.body.date;
+    let amount = req.body.amount;
+    
+    let study = new Study({
+      date: date,
+      amount: amount,
+      userToken: token,
+      token: random_string.generate()
+    })
+    study.save((err,model)=> {
+      if (err) throw err;
+    })
+  })
+
   app.post('/user/register', function (req, res) {
     let user = new User({
       name: req.body.name,
