@@ -119,7 +119,7 @@ function index(app) {
 
         let flatDate = getFlatDate()
 
-        Study.findOne({date: flatDate},(err,model)=> {
+        Study.findOne({date: flatDate,userToken: token},(err,model)=> {
           if (err) throw err;
           if (model == null) {
             //오늘의 공부가 존재하지 않을 경우
@@ -173,7 +173,7 @@ function index(app) {
 
           let flatDate = getFlatDate()
           
-          Study.findOne({date: flatDate},(err,model)=> {
+          Study.findOne({date: flatDate,userToken: token},(err,model)=> {
             if (err) throw err;
             if (model == null) {
               //오늘의 공부가 존재하지 않을 경우
@@ -187,7 +187,7 @@ function index(app) {
                 if (err) throw err;
               })
             } else { //이미 존재할 경우
-              User.updateOne({token: model.token},{$inc: {amount: amount}},(err,model)=> {
+              Study.updateOne({token: model.token},{$inc: {amount: amount}},(err,model)=> {
                 if (err) throw err;
                 res.status(200).send({amount: amount})
               })
