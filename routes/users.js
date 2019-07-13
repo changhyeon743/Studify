@@ -68,6 +68,7 @@ function index(app) {
     })
     study.save((err,model)=> {
       if (err) throw err;
+      res.status(200).send(model);
     })
   })
 
