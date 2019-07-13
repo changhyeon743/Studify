@@ -47,11 +47,7 @@ function index(app) {
     let token = req.body.token;
     Study.find({userToken: token},(err,model)=> {
       if (err) throw err;
-      if (model == null) {
-        res.status(404).send("Wrong Token")
-      } else {
-        res.status(200).send(model)
-      }
+      res.status(200).send(model)
     })
   })
 
