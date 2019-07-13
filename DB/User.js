@@ -18,8 +18,19 @@ let User = new mongoose.Schema({
     average_time: Number,
     max_time: Number,
     token: String,
-    times: Number
+    times: Number,
+
 });
 
 let userModel = mongoose.model('users', User);
 exports.User = userModel;
+
+let Study = new mongoose.Schema({
+    date: String,
+    amount: Number,
+    userToken: String,
+    token: String
+})
+
+let studyModel = mongoose.model('studies', Study);
+exports.Study = studyModel;

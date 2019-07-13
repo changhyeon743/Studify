@@ -2,7 +2,7 @@ module.exports = index;
 
 var async = require('async');
 
-let { User } = require('../DB/User');
+let { User, Study } = require('../DB/User');
 var random_string = require('randomstring');
 
 function index(app) {
@@ -116,6 +116,36 @@ function index(app) {
           if (err) throw err;
           res.status(200).send({amount: along ,message: "초만에 시작하는 공부"});
         })
+
+        var date = new Date(); 
+        var year = date.getFullYear(); 
+        var month = new String(date.getMonth()+1); 
+        var day = new String(date.getDate()); 
+        
+        // 한자리수일 경우 0을 채워준다. 
+        if(month.length == 1){ 
+          month = "0" + month; 
+        } 
+        if(day.length == 1){ 
+          day = "0" + day; 
+        } 
+        let flatTime = year + "" + month + "" + day;
+
+        Study.findOne({date: flatTime},(err,model)=> {
+          if (err) throw err;
+          if (model == null) {
+            //오늘의 공부가 존재하지 않을 경우
+            let study = new Study({
+              date: String,
+              amount: 0,
+              userToken: token,
+              token: random_string.generate()
+            })
+            study.save((err,model)=> {
+              if (err) throw err;
+            })
+          }
+        })
       }
     })
   })
@@ -147,8 +177,40 @@ function index(app) {
 
           User.updateOne({token:token},{$set: {average_time: average_time,start_time: -1, end_time: ended, max_time: max_time, current: "", times: times}},(err,model)=> {
             if (err) throw err;
-            res.status(200).send({amount: amount})
+            //res.status(200).send({amount: amount})
           })
+
+          //MARK: - Study Records
+          // 한자리수일 경우 0을 채워준다. 
+          if(month.length == 1){ 
+            month = "0" + month; 
+          } 
+          if(day.length == 1){ 
+            day = "0" + day; 
+          } 
+          let flatTime = year + "" + month + "" + day;
+
+          Study.findOne({date: flatTime},(err,model)=> {
+            if (err) throw err;
+            if (model == null) {
+              //오늘의 공부가 존재하지 않을 경우
+              let study = new Study({
+                date: String,
+                amount: amount,
+                userToken: token,
+                token: random_string.generate()
+              })
+              study.save((err,model)=> {
+                if (err) throw err;
+              })
+            } else { //이미 존재할 경우
+              User.updateOne({token: model.token},{$inc: {amount: amount}},(err,model)=> {
+                if (err) throw err;
+                res.status(200).send({amount: amount})
+              })
+            }
+          })
+          
         } else {
           res.status(404).send('Already ended')
         }
