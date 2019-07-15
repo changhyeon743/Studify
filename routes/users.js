@@ -45,7 +45,7 @@ function index(app) {
 
   app.post('/user/record', (req,res)=> {
     let token = req.body.token;
-    Study.find({userToken: token},(err,model)=> {
+    Study.find({userToken: token}).sort({date: -1}).exec((err,model)=> {
       if (err) throw err;
       if (model.length == 0) {
         res.status(404).json([]);
