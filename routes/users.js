@@ -48,7 +48,7 @@ function index(app) {
     Study.find({userToken: token},(err,model)=> {
       if (err) throw err;
       if (model.length == 0) {
-        res.status(404).send("Wrong Token")
+        res.status(404).json([]);
       } else {
         res.status(200).send(model)
       }
