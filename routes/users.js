@@ -285,6 +285,10 @@ function getFlatDate() {
   if(day.length == 1){ 
     day = "0" + day; 
   } 
+
+
+
   let flatTime = year + "" + month + "" + day;
+  console.log(flatTime)
   return flatTime;
 }
