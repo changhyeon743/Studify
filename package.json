@@ -15,7 +15,7 @@
     "http-errors": "~1.6.2",
     "jade": "~1.11.0",
     "mongodb": "^3.2.7",
-    "mongoose": "^5.5.15",
+    "mongoose": "^5.7.5",
     "mongose": "^0.0.2-security",
     "morgan": "^1.9.1",
     "randomstring": "^1.1.5"
